@@ -6,8 +6,9 @@ import formData from "form-data";
 import Mailgun from "mailgun.js";
 
 export async function resultsForVin(data: FormData) {
-  if (!data.get("vin")) 
-  redirect(`/results/${data.get("vin")}`);
+  const vin = data.get("vin");
+  if (!vin) return;
+  redirect(`/results/${vin}`);
 }
 
 export async function contactEmailSubmit(data: FormData) {
