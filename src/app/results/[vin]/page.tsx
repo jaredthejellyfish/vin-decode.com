@@ -9,10 +9,11 @@ import VinLookupTable from "@/components/vin-lookup-table";
 import VehicleRecalls from "@/components/vehicle-recalls";
 
 type Props = {
-  params: { vin: string };
+  params: Promise<{ vin: string }>;
 };
 
-export async function generateMetadata({ params: { vin } }: Props) {
+export async function generateMetadata({ params }: Props) {
+  const { vin } = await params;
   const getCachedVinData = unstable_cache(
     async (vin) => getVinData(vin),
     [`vin-${vin}`]
@@ -52,7 +53,8 @@ export async function generateMetadata({ params: { vin } }: Props) {
   };
 }
 
-async function VinResult({ params: { vin } }: Props) {
+async function VinResult({ params }: Props) {
+  const { vin } = await params;
   const getCachedVinData = unstable_cache(
     async (vin) => getVinData(vin),
     [`vin-${vin}`]
@@ -90,7 +92,7 @@ async function VinResult({ params: { vin } }: Props) {
               <Image
                 src={imageUrl}
                 alt={`${data.year} ${data.make} ${data.model}`}
-                layout="fill"
+                fill
                 className="transition-opacity duration-300 hover:opacity-90 object-contain"
                 priority
               />
